@@ -5,10 +5,11 @@
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[]{mcode}
+\usepackage{circuitikz}
 \usepackage{placeins}
 \title{Using a Lock-In amplifier to determine filters from High Pass, Low Pass and Band Pass circuits }
 \author{Aaron Kebede}
-\date{}
+\date{\today}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -34,5 +35,43 @@ We performed our data collection in three steps:
   \caption{Our lab setup}
   \label{fig:LAB_SETUP}
 \end{figure}
+
+\section{Background}
+R-C circuits, as the name indicates, are circuits that consist of resistance and capacitance elements. One may think that these circuits would not be of no specific interest, if speaking based solely on how resistor circuits and capacitor circuits behave. However, when we have a capacitor and resistor in the same circuit, we start observing some interesting phenomena. 
+\newline
+\newline
+\begin{tikzpicture}[american,thick]
+ 
+% Change components size
+\ctikzset{
+    resistors/scale=0.8,
+    capacitors/scale=0.7,
+}
+% Orange boxes
+\draw
+[
+    fill=black!5,
+    draw=black!50
+] (-1,-0.75) rectangle(5,3);
+ 
+\node
+[
+    align=center,
+    minimum width=6cm,
+    fill=blue!50,
+    text=white,
+    draw=black!50
+] at (2,-1){\textbf{RC Low Pass Filter} };
+% Circuit code
+\draw (0,0) to[short,*-*] ++ (4,0);
+\draw (0,2) to[R=R,*-] ++ (3,0) coordinate(a);
+\draw (a) to[short,-*] ++ (1,0);
+\draw (a) to[C,l_=C,*-*] ++(0,-2);
+% Voltage labels
+\draw (0,2) to[open,v=V$_{in}$] ++(0,-2);
+\draw (4,2) to[open,v=V$_{out}$] ++(0,-2);
+\end{tikzpicture}
+ 
+
 
 \end{document}
