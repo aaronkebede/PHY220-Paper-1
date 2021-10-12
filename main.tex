@@ -8,12 +8,12 @@
 \usepackage{placeins}
 \title{Using a Lock-In amplifier to determine filters from High Pass, Low Pass and Band Pass circuits }
 \author{Aaron Kebede}
-\date{\today}
+\date{}
 \begin{document}
 \maketitle
 \begin{abstract}
 
-This report provides insight into the analysis of R-C circuits using signal generators. We study circuits in three steps. First, we study a very simple circuit just consisting of a resistor, a capacitor element, and a signal generator. The signal generator generates a current with a specific frequency which we can then vary to study the effects on the other circuit elements. Second, we create a virtual instrument(using LabVIEW) program to automate alteration of the frequency and third, we add a lock-in amplifier in the circuit to extract all the signals and automate our process of collecting the data. We find that for large frequencies, the phase shift is slightly negatively correlated with the frequency while the amplitude has a strong positive correlation. The data, its analysis, and full plots are available at \url{https://220.kebede.org}
+This report provides insight into the analysis of R-C circuits using signal generators. We study circuits in three steps. First, we study a very simple circuit just consisting of a resistor, a capacitor element, and a signal generator. The signal generator generates a current with a specific frequency which we can then vary to study the effects on the other circuit elements. Second, we create a virtual instrument(using LabVIEW) program to automate alteration of the frequency and third, we add a lock-in amplifier in the circuit to extract all the signals and automate our process of collecting the data. We find that for large frequencies, the phase shift is slightly negatively correlated with the frequency while the amplitude has a strong positive correlation. The data, its analysis, and full plots are available at \url{https://220.kebede.org}\footnote[1]{The website contains documentation on how to use the code, how the data is arranged, the nomenclature of the saved data folder}
 
 \end{abstract}
 
@@ -26,8 +26,7 @@ We performed our data collection in three steps:
 \begin{Steps}
  \item{1. We set up a circuit with a variable resistor, variable capacitor, and  an function generator. We varied the signal on the function generator and then recorded the data \textbf{by hand} on an excel sheet.} \newline{}
  \item{2. We then created a LabVIEW program to automate the signals that were being generated. } \newline{}
- \item{3. We then add an amplifier to the circuit as shown in \textbf{Figure 1} below. We then send signals to the circuit using a LabVIEW program as in step 2. We record data automatically into an excel sheet and we start analyzing out output.}
- 
+ \item{3. We then add an amplifier to the circuit as shown in \textbf{Figure 1} above. We then send signals to the circuit using a LabVIEW program as in step 2. We record data automatically into an excel sheet and we start analyzing out output as will be discussed in the \textbf{Results} section.}
 \end{Steps}
 
 \begin{figure}
