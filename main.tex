@@ -10,7 +10,7 @@
 \usepackage{tikz}
 \usepackage{circuitikz}
 \usepackage{placeins}
-\title{Using a Lock-In amplifier to determine filters from High Pass Circuits}
+\title{Using a Lock-In amplifier to determine filters from Low Pass Circuits}
 \author{Aaron Kebede}
 \date{\today}
 \begin{document}
@@ -32,8 +32,8 @@ RC circuits, as the name indicates, are circuits that consist of resistance and 
 \newline
 \newline
 \newline
+\begin{figure}
 \begin{tikzpicture}[american,thick]
- 
 % Change components size
 \ctikzset{
     resistors/scale=0.8,
@@ -56,22 +56,22 @@ RC circuits, as the name indicates, are circuits that consist of resistance and 
 ] at (2,-1){\textbf{Circuit 1: RC High Pass Filter} };
 % Circuit code
 \draw (0,0) to[short,*-*] ++ (4,0);
-\draw (0,2) to[C=C,*-] ++ (3,0) coordinate(a);
+\draw (0,2) to[R=R,*-] ++ (3,0) coordinate(a);
 \draw (a) to[short,-*] ++ (1,0);
-\draw (a) to[R,l_=R,*-*] ++(0,-2);
+\draw (a) to[C,l_=C,*-*] ++(0,-2);
 % Voltage labels
 \draw (0,2) to[open,v=V$_{in}$] ++(0,-2);
 \draw (4,2) to[open,v=V$_{out}$] ++(0,-2);
 \end{tikzpicture}
-\newline
-\newline
-\newline
+\caption{The RC low pass circuit we are studying. In a simple high pass circuit like this one, the voltage first passes through a capacitor, only then after,through a resistor. }
+\label{fig:High Pass Cir}
+\end{figure}
 
 The time constant tells us important properties about how the circuit behaves. For instance, we can find out experimentally, how the time constant is related to the voltage drop in the circuit. Although we won't be performing an experiment to verify this(as this is a known fact) in our lab, we can use use some publicly available information to verify this. To do this, we performed a simulation on Circuit Lab\footnote{Circuit Lab is an online Circuit Simulation software}. On Circuit Lab, we created a circuit that emulated the properties and set up of the circuit we had in the lab. We then run the simulation, collected the data and visualized it only to discover that it behaves the same as theoretically predicted.
 \newline
 \newline
 The theoretical prediction of a Voltage charging curve against time is that it will be an exponential curve that relates the voltage at each time with the source voltage. It can be mathematically proven as follows;
-Let's apply Kirchhoff's Rule to our circuit in \textbf{Figure 2}.\newline
+Let's apply Kirchhoff's Rule to our circuit in \textbf{Figure 1}.\newline
 
 \(V_{in} - V_{R} - V_{C} =0\), \newline \newline Where V$_{R}$ and V$_{C}$ are voltages in the Resistor and Capacitor respectively. \newline \newline
 V$_{C}$ - IR - $\frac{q}{C}$= 0, \newline \newline Where I is the current in the circuit and q is the charge in the capacitor.\newline \newline
@@ -90,13 +90,13 @@ Here, we discover a very important property when V is V($\tau$). This implies th
 Below are the two voltage curves we made from our simulation - one using a frequency generator and another one as a DC source for the voltage sources. We see in both cases, that the curves follow a general exponential curve. From our derivation above, we have seen that the voltage at any time can be found using equation 1. Our capacitance and resistance values for the circuit were 22nF and \SI{1.5}{M\ohm} respectively from which we can calculate the time constant. \newline
 \begin{figure}
 \includegraphics[width=\linewidth]{images/v2/Signal Generated RC Circuit Plot.pdf}
-\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is signal generated }
+\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is signal generated. Although we can see that the signal oscillates between different values at different times, it follows a general exponential path. The theoretical $\tau$ value is indicated with the green vertical line while we indicated the theoretical V_$\tau$ with a blue horizontal line. It can be seen that the two lines indeed actually indeed cross each other at the experimental value of $\tau$  }
   \label{fig:Signal RC Voltage}
 \end{figure}
 
 \begin{figure}
 \includegraphics[width=\linewidth]{images/v2/RC Circuit Plot.pdf}
-\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is DC voltage.  }
+\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is DC voltage. Here, as explained in the \textbf{Figure 2}, we can clearly see that the data matches the very expected values. The labeled \textbf{tau} and \textbf{V_$\tau$} values are theoretical predictions.}
   \label{fig:DC RC Voltage}
 \end{figure}
 
@@ -119,7 +119,6 @@ When we connect the input directly to the capacitor and connect the capacitor in
 \end{figure}
 
 We performed our data collection in three steps:
-\newline
 \begin{Steps}
  \item{\textbf{1.} We set up a circuit with a variable resistor, variable capacitor, and  a function generator. We varied the signal on the function generator and then recorded the data \textbf{by hand} on an excel sheet. Steps like this generally help get started on an experiment and guide on if we are on the right track.} 
  \item{\textbf{2.} We then created a LabVIEW program to automate the signals that were being generated. } 
@@ -150,9 +149,18 @@ Although we did not use some of the data that was collected, mostly because we w
  \item{\textbf{LA} - Lock-in amplifier}
 \end{Steps}
 \newline \newline
-The data output that we will be finally presenting here is calculated using known well known theorems simple formulae. Let's start with the default output (\textbf{DEF}) in the recorded data. The output contains two sets of data, one that measures the Amplitude change due to signal frequency change and another one that measures the Phase Shift due to signal frequency change. 
+The data output that we will be finally presenting here is calculated using known well known theorems simple formulae. Let's start with the default output (\textbf{DEF}) in the recorded data. The output contains two sets of data, one that measures the Amplitude change due to signal frequency change and another one that measures the Phase Shift due to signal frequency change. Similarly, we created an  identical data structure for the experiment we run with the Lock-In amplifier(\textbf{LA})   
 
+\section{Results and Analysis}
 
+After collecting the data, we performed two  model fits. One using initial guess parameters and another one using a theoretical fit. Each fit was applied for both the Amplitude and Phase Shift curves. We applied model fits and analysis on the latest data set we had(\textbf{v2})
+\subsection{Amplitude Curve Analysis}
+The first data set that we collected had the amplitude-frequency data. One of the first calculations we performed was to perform the cut off frequency.
+\begin{figure}
+\includegraphics[width=\linewidth]{images/v2/LA-Amplitude Fit.pdf}
+\caption{Lock-in amplifier amplitude fit}
+  \label{fig:LA Ampt fit}
+\end{figure}
 
 
 
