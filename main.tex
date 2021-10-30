@@ -1,12 +1,19 @@
 \documentclass[twocolumn]{article}\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
 \usepackage{amsmath}
+\usepackage{csquotes}
 \usepackage{siunitx}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage[]{mcode}
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{bibliography.bib}
 \usepackage{tikz}
 \usepackage{circuitikz}
 \usepackage{placeins}
@@ -17,7 +24,7 @@
 \maketitle
 \begin{abstract}
 
-This report provides insight into the analysis of R-C circuits using signal generators. We study circuits in three steps. First, we study a very simple circuit just consisting of a resistor, a capacitor element, and a signal generator. The signal generator generates a current with a specific frequency which we can then vary to study the effects on the other circuit elements. Second, we create a virtual instrument(using LabVIEW) program to automate alteration of the frequency and third, we add a lock-in amplifier in the circuit to extract all the signals and automate our process of collecting the data. We find that for large frequencies, the phase shift is slightly negatively correlated with the frequency while the amplitude has a strong positive correlation. The data, its analysis, and full plots are available at \url{https://220.kebede.org}\footnote{The website contains documentation on how to use the code, how the data is arranged, the nomenclature of the saved data folder}
+This report provides insight into the analysis of R-C circuits using signal generators. We study circuits in three steps. First, we study a very simple circuit just consisting of a resistor, a capacitor element, and a signal generator. The signal generator generates a current with a specific frequency which we can then vary to study the effects on the other circuit elements. Second, we create a virtual instrument(using LabVIEW) program to automate alteration of the frequency and third, we add a lock-in amplifier in the circuit to extract all the signals and automate our process of collecting the data. We find that for large frequencies, the phase shift is slightly negatively correlated with the frequency while the amplitude has a strong positive correlation. The data, its analysis, and full plots are available at \url{https://220.kebede.org}\footnote{The website contains documentation on how to use the code, how the data is arranged, the nomenclature of the saved data folder}\cite{kebede_2021}
 
 \end{abstract}
 
@@ -89,14 +96,14 @@ Here, we discover a very important property when V is V($\tau$). This implies th
 \newline \newline
 Below are the two voltage curves we made from our simulation - one using a frequency generator and another one as a DC source for the voltage sources. We see in both cases, that the curves follow a general exponential curve. From our derivation above, we have seen that the voltage at any time can be found using equation 1. Our capacitance and resistance values for the circuit were 22nF and \SI{1.5}{M\ohm} respectively from which we can calculate the time constant. \newline
 \begin{figure}
-\includegraphics[width=\linewidth]{images/v2/Signal Generated RC Circuit Plot.pdf}
-\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is signal generated. Although we can see that the signal oscillates between different values at different times, it follows a general exponential path. The theoretical $\tau$ value is indicated with the green vertical line while we indicated the theoretical V_$\tau$ with a blue horizontal line. It can be seen that the two lines indeed actually indeed cross each other at the experimental value of $\tau$  }
+\includegraphics[width=\linewidth]{images/v2/Signal_Generated_RC_Circuit_Plot.pdf}
+\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is signal generated. Although we can see that the signal oscillates between different values at different times, it follows a general exponential path. The theoretical $\tau$ value is indicated with the green vertical line while we indicated the theoretical $V_\tau$ with a blue horizontal line. It can be seen that the two lines indeed actually indeed cross each other at the experimental value of $\tau$}
   \label{fig:Signal RC Voltage}
 \end{figure}
 
 \begin{figure}
-\includegraphics[width=\linewidth]{images/v2/RC Circuit Plot.pdf}
-\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is DC voltage. Here, as explained in the \textbf{Figure 2}, we can clearly see that the data matches the very expected values. The labeled \textbf{tau} and \textbf{V_$\tau$} values are theoretical predictions.}
+\includegraphics[width=\linewidth]{images/v2/RC_Circuit_Plot.pdf}
+\caption{\textbf{V} vs \textbf{T} curve in a circuit where the source is DC voltage. Here, as explained in the \textbf{Figure 2}, we can clearly see that the data matches the very expected values. The labeled \textbf{$\tau$} and \textbf{$V_\tau$} values are theoretical predictions.}
   \label{fig:DC RC Voltage}
 \end{figure}
 
@@ -109,7 +116,7 @@ constant(\textit{i.e.}), t=$\tau$, \newline \newline
 When plotting the experimental data, we labeled the the values of $\tau$ and V($\tau$) to see how the experiment would behave. We find that the experimental results indeed fully match the expected theoretical values as we have presented in Figures 2 and 3. The blue horizontal lines denote V($\tau$) while $\tau$ is represented as the green vertical line on both figures.   
 \subsection{Low Pass Circuits}
 As the name indicates, a low pass filter is a type of circuit filter that lets low frequency signals pass while impeding high frequency(beyond a certain threshold) signals. Some real life applications of low pass filters include being used as audio filters, or in signal blocking for frequencies above a certain threshold. To construct a low pass filter, we created a circuit that resembles the one that we see at Circuit 1. Theoretically, the way a low pass filter works by leveraging the properties of a capacitor. When designing low pass filters, we connect the signal generator or source first to the resistor. First, since its responses to different input signals are different and secondly, it takes time for a capacitor to charge and discharge as we have seen in the section above. 
-When we connect the input directly to the resistor and connect the resistor in series to the resistor, the capacitor lets high frequencies pass while the current below a certain frequency becomes zero. This happens because the capacitor never fully charges at high frequencies but intercepts currents that come out, which blocks current flow in the circuit, but after a certain increase in the frequency, the capacitance decreases and hence current flow is possible.
+When we connect the input directly to the resistor and connect the resistor in series to the resistor, the capacitor lets high frequencies pass while the current below a certain frequency becomes zero. This happens because the capacitor never fully charges at high frequencies but intercepts currents that come out, which blocks current flow in the circuit, but after a certain increase in the frequency, the capacitance decreases and hence current flow is possible.\cite{enwiki:1048317561}
 \section{Methods}
 \subsection{Set Up and Procedures}
 \begin{figure}
@@ -119,12 +126,10 @@ When we connect the input directly to the resistor and connect the resistor in s
 \end{figure}
 
 We performed our data collection in three steps:
-\begin{Steps}
- \item{\textbf{1.} We set up a circuit with a variable resistor, variable capacitor, and  a function generator. We varied the signal on the function generator and then recorded the data \textbf{by hand} on an excel sheet. Steps like this generally help get started on an experiment and guide on if we are on the right track.} 
- \item{\textbf{2.} We then created a LabVIEW program to automate the signals that were being generated. } 
- \item{\textbf{3.} Then, we added an amplifier to the circuit as shown in \textbf{Figure 3} above. We sent signals to the circuit using the LabVIEW program we created in Step 2. We record data automatically into an excel sheet and we start analyzing out output as will be discussed in the \textbf{Results} section.}
-\end{Steps} \newline
-
+\begin{itemize}
+\item{\textbf{1.} We set up a circuit with a variable resistor, variable capacitor, and  a function generator. We varied the signal on the function generator and then recorded the data \textbf{by hand} on an excel sheet. Steps like this generally help get started on an experiment and guide on if we are on the right track.} 
+\item{\textbf{2.} We then created a LabVIEW program to automate the signals that were being generated. } \item{\textbf{3.} Then, we added an amplifier to the circuit as shown in \textbf{Figure 3} above. We sent signals to the circuit using the LabVIEW program we created in Step 2. We record data automatically into an excel sheet and we start analyzing out output as will be discussed in the \textbf{Results} section.}
+\end{itemize}
 \subsection{Data Structure}
 \begin{tikzpicture}
 \node {Root Directory} [sibling distance = 4cm, level distance = 3cm]
@@ -141,14 +146,16 @@ We performed our data collection in three steps:
     child {node {A vs F}}
     child {node {P vs F}}}};
 \end{tikzpicture}
-Although we did not use some of the data that was collected, mostly because we were measuring the wrong things or the data sets were too small(as was the case in the hand recorded data), it was a good insight to have on whether we wanted to do the experiment the way it was or if we had to tweak some of the values from the signal generator, or change the capacitance and resistance so that the results we were trying to show would best be represented. As we have explained in the documentation code, organized the data into CSV/XLSX files. Although the default output of the recorded data from LabVIEW is in the excel format, we change the format to CSV in order to make it easier to use it with software libraries like numpy and pandas. We had three major recordings of the data that we categorized into three groups. One is the hand recorded data, the second one is v1, and the third one is v2. v2 is the most recent and main data of the experiment. v1 is the first version of the data that was collected using LabVIEW before incorporating the amplifier in the circuit. We added the amplifier and recollected data into v2. In the latest version, v2, The data is organized into 4 files. Two of the files are \textit{Amplitude vs Frequency} and \textit{Phase Shift vs Frequency}. The other two are the same but with the lock-in amplifier included. \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \textbf{KEY} \begin{Steps}
+Although we did not use some of the data that was collected, mostly because we were measuring the wrong things or the data sets were too small(as was the case in the hand recorded data), it was a good insight to have on whether we wanted to do the experiment the way it was or if we had to tweak some of the values from the signal generator, or change the capacitance and resistance so that the results we were trying to show would best be represented. As we have explained in the documentation code, organized the data into CSV/XLSX files. Although the default output of the recorded data from LabVIEW is in the excel format, we change the format to CSV in order to make it easier to use it with software libraries like numpy and pandas. We had three major recordings of the data that we categorized into three groups. One is the hand recorded data, the second one is v1, and the third one is v2. v2 is the most recent and main data of the experiment. v1 is the first version of the data that was collected using LabVIEW before incorporating the amplifier in the circuit. We added the amplifier and recollected data into v2. In the latest version, v2, The data is organized into 4 files. Two of the files are \textit{Amplitude vs Frequency} and \textit{Phase Shift vs Frequency}. The other two are the same but with the lock-in amplifier included. \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \newline \textbf{KEY}
+\begin{itemize}
+
  \item{\textbf{A} / \textbf{AMP} - Amplitude}
  \item{\textbf{F} / \textbf{FREQ} - Frequency }
  \item{\textbf{P} / \textbf{PS}  - Phase Shift}
  \item{\textbf{DEF} - Default(without lock-in amplifier)}
  \item{\textbf{LA} - Lock-in amplifier}
-\end{Steps}
 \newline \newline
+\end{itemize}
 The data output that we will be finally presenting here is calculated using known well known theorems simple formulae. Let's start with the default output (\textbf{DEF}) in the recorded data. The output contains two sets of data, one that measures the Amplitude change due to signal frequency change and another one that measures the Phase Shift due to signal frequency change. Similarly, we created an  identical data structure for the experiment we run with the Lock-In amplifier(\textbf{LA})   
 
 \section{Results and Analysis}
@@ -162,16 +169,39 @@ In our case,\(\tau=(\SI{1.5}{M\ohm})*(22nF)=0.033\)s, \newline
 \(f_c=\frac{1}{2\pi(0.033)}\), which is about 4.82 Hz. This by itself is an indicator of how low our frequency is while we were using signals in the order of tens of thousands. This implies that for frequencies above the cutoff, which is 4.82Hz, the output is significantly low and decreases with increasing frequency.
 In figure 5, we have two fits for the observation. The first fit is based solely on the initial values of the parameter. The other fit is based on the the whole data. The latter one fits our observation really well and we can see it very well.
 \begin{figure}
-\includegraphics[width=\linewidth]{images/v2/LA-Amplitude Fit.pdf}
-\caption{Lock-in amplifier amplitude fit. In this plot, we have the observation that captures how the amplitude changes with the changing frequency. }
+\includegraphics[width=\linewidth]{images/v2/LA_Amplitude_Fit.pdf}
+\caption{Lock-in amplifier amplitude fit. In this plot, we have the observation that captures how the amplitude changes with the changing frequency. There is a general trend of decreasing amplitude with increase in the frequency. }
   \label{fig:LA Ampt fit}
 \end{figure}
 In \textbf{figure 6}, we include the cutoff frequency to visually understand where the frequency stands in the RC filter.
 
 \begin{figure}
-\includegraphics[width=\linewidth]{images/v2/Cut Off LA - Amplitude Fit.pdf}
+\includegraphics[width=\linewidth]{images/v2/cutoff-fit.pdf}
 \caption{Lock-in amplifier amplitude fit with the cutoff frequency labeled. The cutoff frequency at x=0.00482 is labeled with a purple line, and we can see that it is a very small value compared to the range of the frequency(which is 40,000 Hz). The general trend of the amplitude after the cutoff frequency is \textit{decline}, this implies that the voltage is being impeded and hence our filter is rather a low pass one. }
   \label{fig:CutOff LA Ampt fit}
 \end{figure}
-One important matter to discuss is our fitting functions. For both our amplitude phase(which will be discussed shortly) fits, we used the python package LMFIT\footnote{LMFIT is a python package that express itself as a Non-Linear Least-Squares Minimization and Curve-Fitting for Python}. For the amplitude fit, 
+One important matter to discuss is our fitting functions. For both our amplitude phase(which will be discussed shortly) fits, we used the python package LMFIT\footnote{LMFIT is a python package that express itself as a Non-Linear Least-Squares Minimization and Curve-Fitting for Python}. For the amplitude fit, we used the following fitting formula;
+\(fit = \frac{A_m}{\sqrt{(1+(2\pi\tau x)^2}}\), where $A_m$ is the mean amplitude and x is a function we defined as part of the fitting function. You can read more about how the fitting function works on the LMFIT paper\cite{2016ascl.soft06014N}. 
+\subsection{Phase Shift Curve Analysis}
+As for the phase shift fit, we used the following relation: \newline
+\(fit = \frac{P_m}{\pi*arctan(2*\pi*\tau*x)}\), where $P_m$ is the mean phase shift.
+
+When we fit the phase shift to the above function, we get the results shown in figure 7.
+\begin{figure}
+\includegraphics[width=\linewidth]{images/v2/LP_Phase_Shift_Fit.pdf}
+\caption{Lock-in amplifier phase shift fit. In this plot, we have the observation that captures how the phase shift changes with the changing frequency. There is a degeneracy between the phase shift and frequency. }
+  \label{fig:lp PS  fit}
+\end{figure}
+As we can observe from figure 8, there is a general degeneracy between the phase shift and the frequency. Although our model worked arguably well in fitting the amplitude, we can see that it doesn't do a great job in fitting for the phase shift. At least, we were expecting a somewhat sinusoidal phase shift as we have seen in the \textbf{DEF} version of the data that we had which is displayed in figure 8.
+\begin{figure}
+\includegraphics[width=\linewidth]{images/v2/fp.pdf}
+\caption{In the \textbf{DEF} version of the data we had, we made a test plot to see   how the phase shift would behave with changing frequency.}
+  \label{fig:PS s fit}
+\end{figure}
+\section{Discussion, Error Analysis and Conclusion}
+We observed the theoretically predicted degeneracy between the amplitude and frequency. As for the phase shift fit, there could be many explanations for the not so great phase shift fit that we have. One of the most probable explanations is that we have recorded the wrong thing. We were having difficulties with setting the signal generator and it may have contributed to the possibly faulty data. However, this can't really be a fair explanation to an error. I believe our error stems from the fact that we didn't have enough distinct points for the model to recognize the difference and hence create a fit.
+
+\medskip
+
+\printbibliography
 \end{document}
